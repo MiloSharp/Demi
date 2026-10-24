@@ -1,4 +1,4 @@
-# Demi 0.9.0-beta
+# Demi 0.9.1-beta
 
 Demi is a local, multi-agent collaboration room. This is a clean beta installation: it contains no credentials, chat history, manuscripts, or preconfigured AI agents.
 
@@ -22,4 +22,4 @@ Windows 11 and PowerShell 7 are recommended. A Node.js runtime is included in u
 
 ## Beta notice
 
-Back up important projects before upgrades. This is version 0.9.0-beta and has not yet been through a signed installer or automatic-upgrade process.
+Back up important projects before upgrades. This is version 0.9.1-beta and has not yet been through a signed installer or automatic-upgrade process.
