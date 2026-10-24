@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "enabled": false,
+  "provider": "postgresql",
+  "fallback": "files",
+  "readCapabilities": [
+    "session-summaries",
+    "claims",
+    "documents",
+    "entities",
+    "timeline"
+  ],
+  "writeCapabilities": [],
+  "agents": [],
+  "maximumItemsPerKind": 4,
+  "maximumContextCharacters": 5000
+}

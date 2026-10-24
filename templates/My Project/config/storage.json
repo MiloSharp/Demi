@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "backend": "files",
+  "fallback": "files",
+  "projectSlug": "demi-project",
+  "mirrorWrites": false,
+  "allowAutomaticStartupFallback": true,
+  "allowAutomaticMidSessionFallback": false,
+  "exportMarkdownTranscripts": true
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 2,
+  "projectName": "My Project",
+  "currentSession": "sessions\\session-001.md",
+  "currentBook": null,
+  "currentStory": null,
+  "focusCharacters": [],
+  "keywords": [],
+  "currentManuscript": null,
+  "decisions": "decisions\\owner-decisions.md",
+  "openItems": "decisions\\open-items.md"
+}

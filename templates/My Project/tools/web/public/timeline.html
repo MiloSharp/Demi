@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Project Timeline · Demi</title>
+  <link rel="stylesheet" href="timeline.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/" aria-label="Return to Demi">← Demi</a>
+    <div>
+      <h1>Project Timeline</h1>
+      <p id="project-name">Structured events and source records</p>
+    </div>
+    <button id="add-event" class="add-event" type="button">Add event</button>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="Timeline controls">
+      <label class="search-field">
+        <span>Search</span>
+        <input id="search" type="search" placeholder="Search events, summaries, sources…" autocomplete="off">
+      </label>
+      <label>
+        <span>Silo</span>
+        <select id="silo"><option value="">All silos</option></select>
+      </label>
+      <label>
+        <span>Status</span>
+        <select id="status"><option value="">All statuses</option></select>
+      </label>
+      <label>
+        <span>Verification</span>
+        <select id="verification"><option value="">All verification states</option></select>
+      </label>
+      <button id="clear" type="button">Clear filters</button>
+    </section>
+
+    <section class="summary" aria-live="polite">
+      <strong id="result-count">Loading timeline…</strong>
+      <span id="sort-summary"></span>
+    </section>
+
+    <section class="table-shell" aria-label="Timeline events">
+      <table>
+        <thead>
+          <tr>
+            <th><button class="sort" data-key="date" type="button">Date <span aria-hidden="true"></span></button></th>
+            <th><button class="sort" data-key="title" type="button">Event <span aria-hidden="true"></span></button></th>
+            <th><button class="sort" data-key="silo" type="button">Silo <span aria-hidden="true"></span></button></th>
+            <th><button class="sort" data-key="status" type="button">Status <span aria-hidden="true"></span></button></th>
+            <th><button class="sort" data-key="confidence" type="button">Confidence <span aria-hidden="true"></span></button></th>
+          </tr>
+        </thead>
+        <tbody id="timeline-body"></tbody>
+      </table>
+      <div id="empty" class="empty" hidden>No timeline events match those filters.</div>
+      <div id="error" class="empty error" hidden></div>
+    </section>
+  </main>
+
+  <template id="event-template">
+    <tr class="event-row" tabindex="0">
+      <td class="date-cell" data-label="Date"></td>
+      <td data-label="Event"><strong class="event-title"></strong><span class="event-summary"></span></td>
+      <td class="silo-cell" data-label="Silo"></td>
+      <td data-label="Status"><span class="badge status-badge"></span></td>
+      <td data-label="Confidence" class="confidence-cell"></td>
+    </tr>
+    <tr class="detail-row" hidden><td colspan="5"><div class="details"></div></td></tr>
+  </template>
+  <dialog id="timeline-dialog" class="timeline-dialog">
+    <form id="timeline-form">
+      <input id="timeline-id" type="hidden">
+      <div class="dialog-heading"><div><small>Project memory</small><h2 id="timeline-form-title">Add timeline event</h2></div><button id="close-timeline" type="button">Close</button></div>
+      <div class="timeline-form-grid">
+        <label class="wide">Displayed date<input id="timeline-date" maxlength="120" required placeholder="14 December 2456 or c. 2743–2745"></label>
+        <label>Earth year start<input id="timeline-start" type="number" step="any"></label>
+        <label>Earth year end<input id="timeline-end" type="number" step="any"></label>
+        <label class="wide">Event title<input id="timeline-title" maxlength="200" required></label>
+        <label class="wide">Summary<textarea id="timeline-summary" rows="4" maxlength="4000"></textarea></label>
+        <label>Focus silo<select id="timeline-focus"></select></label>
+        <label>Silos (select all that apply)<select id="timeline-references" multiple size="4"></select></label>
+        <label>Status<select id="timeline-edit-status"><option value="suggested">Suggested</option><option value="proposed">Proposed</option><option value="verified">Verified</option><option value="canon">Canon</option></select></label>
+        <label>Confidence<input id="timeline-confidence" maxlength="80"></label>
+        <label>Date system<input id="timeline-date-system" maxlength="120"></label>
+        <label class="wide">Date basis<input id="timeline-date-basis" maxlength="1000"></label>
+        <label class="wide">Cross-book impact<input id="timeline-impact" maxlength="1000"></label>
+        <label>Source label<input id="timeline-source-label" maxlength="240"></label>
+        <label class="wide">Source claim<input id="timeline-source-claim" maxlength="2000"></label>
+      </div>
+      <div class="dialog-actions"><button id="delete-timeline" class="danger" type="button" hidden>Delete event</button><span id="timeline-form-status" aria-live="polite"></span><button class="primary" type="submit">Save event</button></div>
+    </form>
+  </dialog>
+  <script src="timeline.js" defer></script>
+</body>
+</html>

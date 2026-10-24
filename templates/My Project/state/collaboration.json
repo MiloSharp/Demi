@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "sessionNumber": 1,
+  "currentSession": "sessions\\session-001.md",
+  "focus": {
+    "book": null,
+    "story": null,
+    "characters": [],
+    "keywords": [],
+    "updatedAt": null
+  },
+  "entryCounter": 1,
+  "roundCounter": 0,
+  "lastEntry": "S001-S0001",
+  "lastAuthor": "System",
+  "lastUpdated": "2026-10-07T00:22:59.2734165+02:00",
+  "round": {
+    "id": null,
+    "status": "waiting_for_human",
+    "remainingResponses": 0,
+    "nextSpeaker": "Owner",
+    "target": "Both",
+    "openedBy": null
+  },
+  "usage": {
+    "claude": {
+      "percentConsumed": null,
+      "reportedAt": null,
+      "source": null
+    },
+    "rowan": {
+      "percentConsumed": null,
+      "reportedAt": null,
+      "source": null
+    }
+  }
+}

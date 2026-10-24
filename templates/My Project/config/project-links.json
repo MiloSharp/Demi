@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "menuLabel": "Project links",
+  "links": [
+    {
+      "label": "Timeline",
+      "category": "Project",
+      "target": "timeline.html",
+      "description": "Search, filter, and sort dated project events."
+    }
+  ]
+}

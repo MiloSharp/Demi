@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demi</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="app-shell">
+  <button id="drawer-backdrop" class="drawer-backdrop" type="button" aria-label="Close open panel"></button>
+  <header class="topbar">
+    <button id="mobile-conversation" class="icon-button mobile-only" type="button" aria-controls="conversation-sidebar" aria-expanded="false" aria-label="Open conversation navigation">☰</button>
+    <div class="brand"><span class="brand-mark">D</span><div><strong>Demi</strong><small id="session-name">Shared collaboration</small></div></div>
+    <details class="agent-presence-menu" open>
+      <summary id="mobile-agent-menu" class="icon-button mobile-only" aria-label="Open agents menu" title="Agents">
+        <span id="mobile-agent-icon" class="mobile-agent-icon" aria-hidden="true">●</span>
+        <span id="mobile-agent-name" class="mobile-agent-name" aria-hidden="true">Agents</span>
+      </summary>
+      <div class="agent-presence" aria-label="Agent availability">
+        <span id="agent-presence-list"></span>
+        <button id="checkin-all" class="checkin-all" type="button" title="Privately check in with all configured agents">Check all</button>
+      </div>
+    </details>
+    <div id="connection" class="connection">Connecting…</div>
+    <details class="mobile-actions-menu" open>
+      <summary class="icon-button mobile-only">Menu</summary>
+      <div class="top-actions">
+        <details class="feature-menu">
+          <summary id="project-links-label" class="icon-button">Project links</summary>
+          <div id="project-links-panel" class="feature-panel" aria-label="Project links"></div>
+        </details>
+        <button id="draft-button" class="icon-button" type="button">Draft</button>
+        <button id="agents-button" class="icon-button" type="button">People &amp; Agents</button>
+        <button id="sessions-button" class="icon-button" type="button">Sessions</button>
+        <button id="new-session" class="icon-button" type="button">New Session</button>
+        <button id="settings-button" class="icon-button" type="button" aria-expanded="false" aria-controls="settings">Display</button>
+        <button id="help-button" class="icon-button help-button" type="button" aria-label="Open Demi help" title="Help">?</button>
+        <button id="mobile-files" class="icon-button mobile-only" type="button" aria-controls="session-files" aria-expanded="false">Files</button>
+      </div>
+    </details>
+  </header>
+
+  <aside id="settings" class="settings" hidden>
+    <label>Theme <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+    <label>View <select id="view"><option value="compact">Compact</option><option value="detailed">Detailed</option></select></label>
+    <label>Message font <select id="message-font-size"><option value="15">Small</option><option value="17">Standard</option><option value="19">Large</option><option value="21">Extra large</option></select></label>
+    <label><input id="show-ids" type="checkbox"> Entry IDs</label>
+    <label><input id="show-time" type="checkbox"> Timestamps</label>
+    <label><input id="show-status" type="checkbox"> Round status</label>
+    <label><input id="show-dispatch" type="checkbox"> Dispatch notices</label>
+    <label><input id="show-counts" type="checkbox"> Response counts</label>
+  </aside>
+
+  <div class="content-shell">
+    <aside id="conversation-sidebar" class="conversation-sidebar" aria-label="Conversation navigation">
+      <div class="conversation-heading">
+        <h2>Conversation</h2>
+        <div class="conversation-heading-actions">
+          <button id="conversation-order" class="conversation-order" type="button" title="Reverse conversation order">Newest first</button>
+          <button id="conversation-collapse" class="icon-button" type="button" aria-controls="conversation-list" aria-expanded="true" aria-label="Collapse conversation sidebar">‹</button>
+        </div>
+      </div>
+      <nav id="conversation-list" class="conversation-list" aria-label="Conversation statements"></nav>
+      <aside id="session-files" class="session-files" aria-labelledby="session-files-heading">
+        <div class="session-files-heading">
+          <button id="session-files-toggle" type="button" aria-expanded="false" aria-controls="session-file-list">
+            <span id="session-files-heading">Session files</span>
+            <span id="session-file-count">0</span>
+          </button>
+          <button id="close-session-files" class="secondary mobile-only" type="button">Close</button>
+        </div>
+        <div id="session-file-list" class="session-file-list" hidden>
+          <p class="session-files-empty">No files created in this session.</p>
+        </div>
+      </aside>
+    </aside>
+    <main>
+      <button id="load-earlier" class="load-earlier" type="button" hidden>Load earlier messages</button>
+      <section id="messages" class="messages" aria-live="polite" aria-label="Current Demi session"></section>
+      <button id="new-messages" class="new-messages" type="button" hidden>New messages ↓</button>
+    </main>
+  </div>
+
+  <section class="workspace">
+    <div class="workspace-main">
+      <div id="notice" class="notice" hidden></div>
+    <div id="status-clocks" class="status-clocks">
+      <div class="status-active"><button id="activity" class="activity" type="button" aria-expanded="false">Waiting for you</button><button id="stop" class="secondary danger" type="button">Stop</button></div>
+      <div id="last-response" class="last-response" aria-live="off">Last response: none</div>
+      <div id="activity-details" class="activity-details" hidden></div>
+    </div>
+    <div class="composer-shell">
+      <div class="composer-edit-actions" aria-label="Composer clipboard controls">
+        <span id="composer-drop-feedback" class="composer-drop-feedback">Paste, drop, or attach PNG, JPEG, WebP, or GIF images up to 10 MB.</span>
+        <button id="copy-composer" class="composer-tool" type="button" title="Copy the entire message">Copy all</button>
+        <button id="paste-composer" class="composer-tool" type="button" title="Replace the entire message with clipboard text">Paste &amp; replace</button>
+        <button id="attach-image" class="composer-tool" type="button">Attach files</button>
+        <input id="attachment-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif,.md,.pdf,.docx,.epub" multiple hidden>
+      </div>
+      <div id="attachment-preview" class="attachment-preview" aria-live="polite" hidden></div>
+      <textarea id="composer" rows="2" maxlength="100000" placeholder="Message Demi…" aria-label="Message" title="Ctrl+Enter to send"></textarea>
+      <div class="composer-actions">
+        <div class="left-actions">
+          <label class="continue-control">Continue <input id="continue-count" type="number" value="2" min="1" max="12"><button id="continue" class="secondary" type="button">Add</button></label>
+        </div>
+        <div id="session-capacity" class="session-capacity" aria-live="polite">
+          <div class="session-capacity-track"><span id="session-capacity-fill"></span></div>
+          <span id="session-capacity-label" class="session-capacity-label">Session capacity</span>
+        </div>
+        <button id="send" class="send" type="button">Send</button>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="help-dialog" class="help-dialog">
+    <div class="dialog-heading help-heading"><div><small>User guide</small><h2>Demi Help</h2></div><button id="close-help" type="button" class="icon-button">Close</button></div>
+    <label class="help-search">Search help<input id="help-search" type="search" placeholder="Try “draft”, “review”, “phone”, or a command…"></label>
+    <div id="help-content" class="help-content"></div>
+  </dialog>
+
+  <dialog id="connection-qr-dialog" class="connection-qr-dialog">
+    <div class="dialog-heading"><div><small>Home network</small><h2>Connect a phone to Demi</h2></div><button id="close-connection-qr" class="icon-button" type="button">Close</button></div>
+    <p>Scan this while the phone is connected to the same home network.</p>
+    <div id="connection-qr" class="connection-qr" aria-label="Demi connection QR code"></div>
+    <code id="connection-qr-url" class="connection-qr-url"></code>
+  </dialog>
+
+  <dialog id="project-dialog" class="project-dialog">
+    <form id="project-form">
+      <div class="dialog-heading"><div><small>Shared context</small><h2>Project setup</h2></div><button id="close-project" class="icon-button" type="button">Close</button></div>
+      <p class="project-explanation">This briefing is supplied to every agent. Individual agent files still control each agent’s role and voice.</p>
+      <div class="project-form-grid">
+        <label>Project name<input id="project-name" maxlength="120" required></label>
+        <label>What is this project?<textarea id="project-description" rows="4" maxlength="4000"></textarea></label>
+        <label>What should Demi help accomplish?<textarea id="project-goals" rows="4" maxlength="4000"></textarea></label>
+        <label>Ownership and decision authority<textarea id="project-authority" rows="4" maxlength="4000"></textarea></label>
+        <label>Shared instructions for every agent<textarea id="project-instructions" rows="5" maxlength="6000"></textarea></label>
+        <label>Key project files <span>(one project-relative path per line)</span><textarea id="project-sources" rows="5" placeholder="COLLABORATION.md&#10;state\project-manifest.json"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button id="open-storage" class="secondary" type="button">Storage setup</button><span id="project-form-status" aria-live="polite"></span><button class="send" type="submit">Save project</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="storage-dialog" class="project-dialog storage-dialog">
+    <form id="storage-form">
+      <div class="dialog-heading"><div><small>Project data</small><h2>Storage setup</h2></div><button id="close-storage" class="icon-button" type="button">Close</button></div>
+      <p class="project-explanation">Demi can keep sessions in ordinary files or PostgreSQL. Documents, images, EPUBs, and other binary files always remain on the file system.</p>
+      <div id="storage-current" class="storage-current"></div>
+      <div class="project-form-grid storage-grid">
+        <label>Host<input id="storage-host" maxlength="253" placeholder="127.0.0.1"></label>
+        <label>Port<input id="storage-port" type="number" min="1" max="65535" value="5432"></label>
+        <label>Database<input id="storage-database" maxlength="63" placeholder="demi"></label>
+        <label>Administrator<input id="storage-admin" maxlength="63" placeholder="postgres"></label>
+        <label>Schema<input id="storage-schema" maxlength="63" placeholder="demi"></label>
+        <label>Owner role<input id="storage-owner" maxlength="63" placeholder="demi_owner"></label>
+        <label>Application user<input id="storage-user" maxlength="63" placeholder="demi_app"></label>
+      </div>
+      <label class="storage-option"><input id="storage-fallback" type="checkbox"> Fall back to files if PostgreSQL is unavailable at startup</label>
+      <label class="storage-option"><input id="storage-export" type="checkbox"> Keep Markdown transcript exports</label>
+      <div class="storage-actions">
+        <button id="storage-save" class="secondary" type="button">Save settings</button>
+        <button id="storage-test" class="secondary" type="button">Test connection</button>
+        <button id="storage-provision" class="secondary" type="button">Create database</button>
+        <button id="storage-migrate" class="secondary" type="button">Update schema</button>
+        <button id="storage-preview" class="secondary" type="button">Preview import</button>
+        <button id="storage-import" class="send" type="button">Import and use PostgreSQL</button>
+        <button id="storage-files" class="secondary" type="button">Use files</button>
+      </div>
+      <pre id="storage-output" class="storage-output" aria-live="polite"></pre>
+      <p class="project-explanation">Database creation uses your local PostgreSQL administrator access. Demi stores its generated application credential in your Windows credential files, never in this form.</p>
+    </form>
+  </dialog>
+
+  <dialog id="image-confirm-dialog" class="project-dialog image-confirm-dialog">
+    <div class="dialog-heading"><div><small>Art · billable generation</small><h2>Generate this image?</h2></div><button id="cancel-image-generation-top" class="icon-button" type="button">Close</button></div>
+    <p id="image-confirm-prompt" class="image-confirm-prompt"></p>
+    <dl class="image-confirm-details">
+      <dt>Provider</dt><dd id="image-confirm-provider"></dd>
+      <dt>Model</dt><dd id="image-confirm-model"></dd>
+      <dt>Resolution</dt><dd id="image-confirm-resolution"></dd>
+      <dt>Aspect ratio</dt><dd id="image-confirm-aspect"></dd>
+      <dt>Reference images</dt><dd id="image-confirm-references"></dd>
+      <dt>Expected cost</dt><dd id="image-confirm-cost"></dd>
+      <dt>Credits</dt><dd id="image-confirm-credits"></dd>
+    </dl>
+    <p class="project-explanation">No generation request is sent until you confirm.</p>
+    <div class="dialog-actions"><button id="cancel-image-generation" class="secondary" type="button">Cancel</button><button id="confirm-image-generation" class="send" type="button">Generate image</button></div>
+  </dialog>
+
+  <dialog id="timeline-dialog" class="timeline-dialog">
+    <form id="timeline-form">
+      <input id="timeline-id" type="hidden">
+      <div class="dialog-heading"><div><small>Project memory</small><h2 id="timeline-form-title">Add timeline event</h2></div><button id="close-timeline" type="button" class="icon-button">Close</button></div>
+      <div class="timeline-form-grid">
+        <label class="timeline-wide">Displayed date<input id="timeline-date" maxlength="120" required placeholder="14 December 2456 or c. 2743–2745"></label>
+        <label>Earth year start<input id="timeline-start" type="number" step="any" placeholder="2456"></label>
+        <label>Earth year end<input id="timeline-end" type="number" step="any" placeholder="2456"></label>
+        <label class="timeline-wide">Event title<input id="timeline-title" maxlength="200" required></label>
+        <label class="timeline-wide">Summary<textarea id="timeline-summary" rows="4" maxlength="4000"></textarea></label>
+        <label>Focus silo<select id="timeline-focus"></select></label>
+        <label>Silos (select all that apply)<select id="timeline-references" multiple size="4"></select></label>
+        <label>Status<select id="timeline-status"><option value="suggested">Suggested</option><option value="proposed">Proposed</option><option value="verified">Verified</option><option value="canon">Canon</option></select></label>
+        <label>Confidence<input id="timeline-confidence" maxlength="80" placeholder="High, Medium, calculated…"></label>
+        <label>Date system<input id="timeline-date-system" maxlength="120" value="Earth calendar"></label>
+        <label class="timeline-wide">Date basis<input id="timeline-date-basis" maxlength="1000" placeholder="How this date was established or calculated"></label>
+        <label class="timeline-wide">Cross-book impact<input id="timeline-impact" maxlength="1000"></label>
+        <label>Source label<input id="timeline-source-label" maxlength="240" placeholder="Milo-added"></label>
+        <label class="timeline-wide">Source claim<input id="timeline-source-claim" maxlength="2000"></label>
+      </div>
+      <div class="dialog-actions"><button id="delete-timeline" class="danger" type="button" hidden>Delete event</button><span id="timeline-form-status" aria-live="polite"></span><button class="send" type="submit">Save event</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="new-session-dialog">
+    <h2>Open a new session?</h2>
+    <p id="new-session-summary"></p>
+    <p>The next numbered session will open. This transcript will remain archived and readable.</p>
+    <p id="new-session-open-round" hidden>This session has an open collaboration discussion. Continuing will close and checkpoint it according to <code>demi new-session</code> semantics; it will not be silently discarded.</p>
+    <div class="dialog-actions">
+      <button id="cancel-new-session" class="secondary" type="button">Keep current session</button>
+      <button id="confirm-new-session" class="danger" type="button">Archive and open new session</button>
+    </div>
+  </dialog>
+  <dialog id="sessions-dialog" class="sessions-dialog">
+    <div class="sessions-dialog-header"><div><h2>Sessions</h2>
+    <p>Open any transcript to read it. Sessions near capacity continue in a new linked session.</p></div><button id="close-sessions-top" class="secondary mobile-only" type="button">Close</button></div>
+    <div id="sessions-list" class="sessions-list"></div>
+    <div class="dialog-actions sessions-dialog-footer"><button id="close-sessions" class="secondary" type="button">Close</button></div>
+  </dialog>
+
+  <dialog id="agents-dialog" class="agents-dialog">
+    <div class="agents-dialog-header">
+      <div><h2>People &amp; Agents</h2><p>Customize human participants and add local or subscription-backed collaborators.</p></div>
+      <div class="agents-dialog-header-actions">
+        <button id="add-human" class="secondary" type="button">Add person</button>
+        <button id="add-agent" class="secondary" type="button">Add agent</button>
+        <button id="close-agents-top" class="secondary agents-dialog-top-close" type="button">Close</button>
+      </div>
+    </div>
+    <section class="humans-section agent-list-view"><h3>People</h3><div id="humans-list" class="humans-list"></div></section>
+    <section class="security-section agent-list-view">
+      <h3>Home-network security</h3>
+      <form id="security-form" class="security-form">
+        <label><input id="require-lan-pairing" type="checkbox"> Require a pairing code for new devices on the home network</label>
+        <p id="security-warning">Recommended. Without pairing, any device on this network can open Demi.</p>
+        <span id="security-form-status" aria-live="polite"></span>
+        <button class="secondary" type="submit">Save security</button>
+      </form>
+    </section>
+    <div class="agents-section-heading agent-list-view"><h3>Agents</h3><span>Drag agents to set the collaboration workflow order.</span></div>
+    <div id="agents-list" class="agents-list agent-list-view"></div>
+    <form id="agent-form" class="agent-form" hidden>
+      <input id="agent-original-handle" type="hidden">
+      <div class="agent-form-heading"><div><h3 id="agent-form-title">Add agent</h3><p id="agent-host-note" class="agent-host-note" hidden>Read-only on this device · Edit on the host computer</p></div><button id="cancel-agent" class="secondary" type="button">Cancel</button></div>
+      <div class="agent-form-grid">
+        <label>Name<input id="agent-name" maxlength="60" required placeholder="Qwen"></label>
+        <label>Command name<input id="agent-handle" maxlength="32" required pattern="[a-z][a-z0-9_-]{0,31}" placeholder="qwen"></label>
+        <label>Connection<select id="agent-kind"><option>Ollama</option><option>Claude</option><option>Codex</option><option>Antigravity</option><option value="HTTP">HTTP API</option><option value="Image">Image generator</option></select></label>
+        <label>Model<input id="agent-model" maxlength="120" placeholder="qwen3:8b"></label>
+        <div id="agent-image-fields" class="agent-http-fields agent-wide" hidden>
+          <label>Image provider<select id="agent-image-provider"><option value="replicate">Replicate</option><option value="openai" disabled>OpenAI (coming next)</option><option value="ideogram" disabled>Ideogram (coming next)</option></select></label>
+          <label>Default resolution<select id="agent-image-resolution"><option>1K</option><option selected>2K</option><option>4K</option></select></label>
+          <label class="agent-wide">Provider API key<input id="agent-image-api-key" type="password" maxlength="500" autocomplete="new-password" placeholder="Paste the provider API key"></label>
+          <span class="agent-form-help agent-wide">The model can be a configured alias such as <code>nano-banana-pro</code> or a Replicate <code>owner/model</code> identifier. The encrypted provider key is shared by image agents using that provider.</span>
+        </div>
+        <div id="agent-http-fields" class="agent-http-fields agent-wide" hidden>
+          <label>Provider preset<select id="agent-http-provider"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="gemini">Google Gemini</option><option value="mistral">Mistral</option><option value="deepseek">DeepSeek</option><option value="other">Other</option></select></label>
+          <label>API format<select id="agent-api-style"><option value="">Choose a format</option><option value="openai-responses">OpenAI Responses</option><option value="openai-chat">OpenAI-compatible Chat</option><option value="anthropic-messages">Anthropic Messages</option></select></label>
+          <label class="agent-wide">API URL<input id="agent-base-url" type="url" maxlength="500" autocomplete="off" placeholder="https://api.example.com/v1"></label>
+          <label class="agent-wide">API key<input id="agent-api-key" type="password" maxlength="500" autocomplete="new-password" placeholder="Paste an API key"></label>
+        </div>
+        <label>Icon<span class="agent-icon-control"><select id="agent-icon-picker" aria-label="Choose an icon"><option value="🧠">🧠 Brain</option><option value="🎨">🎨 Palette</option><option value="🖼️">🖼️ Picture</option><option value="✒️">✒️ Pen</option><option value="🧭">🧭 Compass</option><option value="💎">💎 Gem</option><option value="🤖">🤖 Robot</option><option value="🔬">🔬 Science</option><option value="📚">📚 Books</option><option value="🛰️">🛰️ Satellite</option><option value="🌌">🌌 Cosmos</option><option value="⚙️">⚙️ Gear</option><option value="✨">✨ Sparkles</option><option value="custom">Custom…</option></select><input id="agent-icon" maxlength="8" value="🧠" aria-label="Custom icon"></span></label>
+        <label>Color<input id="agent-color" type="color" value="#a779e9"></label>
+        <label class="agent-wide">Aliases <input id="agent-aliases" maxlength="160" placeholder="q, local (comma-separated)"></label>
+        <label class="agent-wide">Role <input id="agent-role" maxlength="240" placeholder="Local research and brainstorming partner"></label>
+        <label class="agent-wide">Instruction file <input id="agent-instruction-file" maxlength="240" placeholder="agents\qwen.md"></label>
+      </div>
+      <div class="agent-options">
+        <label><input id="agent-direct" type="checkbox" checked> Allow <code>/name</code> direct messages</label>
+        <label><input id="agent-automatic" type="checkbox"> Include in every collaboration round</label>
+        <label><input id="agent-synthesis" type="checkbox"> Use for synthesis</label>
+      </div>
+      <p id="agent-form-help" class="agent-form-help">For Ollama, use the exact installed model name. Invited agents respond only when addressed directly.</p>
+      <div class="dialog-actions"><span id="agent-form-status" aria-live="polite"></span><button id="save-agent" class="send" type="submit">Save agent</button></div>
+    </form>
+    <div class="dialog-actions agents-dialog-footer"><button id="close-agents" class="secondary" type="button">Close</button></div>
+  </dialog>
+
+  <dialog id="human-dialog" class="identity-dialog human-dialog">
+    <form id="human-form">
+      <div class="dialog-heading"><div><small>Human participant</small><h2>Add person</h2></div><button id="close-human" class="icon-button" type="button">Close</button></div>
+      <label>Display name<input id="human-name" maxlength="60" required placeholder="Name"></label>
+      <label>Color<input id="human-color" type="color" value="#6fa8dc"></label>
+      <label>Role<select id="human-role"><option value="contributor">Contributor</option><option value="guest">Guest</option><option value="owner">Project owner</option></select></label>
+      <label class="human-dialog-check"><input id="human-canon" type="checkbox"> Can confirm project canon</label>
+      <label>Optional password or PIN<input id="human-password" type="password" minlength="4" maxlength="128" autocomplete="new-password"></label>
+      <label class="human-dialog-check"><input id="human-switch" type="checkbox" checked> Switch to this person after adding</label>
+      <div class="dialog-actions"><span id="human-form-status" aria-live="polite"></span><button id="save-human" class="send" type="submit">Add person</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="identity-dialog" class="identity-dialog">
+    <form id="identity-form">
+      <input id="identity-id" type="hidden">
+      <div class="dialog-heading"><div><small>Human identity</small><h2 id="identity-title">Sign in</h2></div><button id="close-identity" class="icon-button" type="button">Close</button></div>
+      <p id="identity-explanation"></p>
+      <label>Password or PIN<input id="identity-password" type="password" maxlength="128" autocomplete="current-password"></label>
+      <label class="identity-remember"><input id="identity-remember" type="checkbox"> Remember this identity on this browser for 30 days</label>
+      <div class="dialog-actions"><span id="identity-status" aria-live="polite"></span><button class="send" type="submit">Continue</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="draft-dialog" class="draft-dialog">
+    <form id="draft-form">
+      <div class="dialog-heading"><div><small>Configurable workflow</small><h2>Document draft</h2></div><button id="close-draft" type="button" class="icon-button">Close</button></div>
+      <label>Drafting instructions<textarea id="draft-request" rows="7" required placeholder="Write the departure scene…"></textarea></label>
+      <div class="draft-options">
+        <label>Drafter<select id="draft-agent"></select></label>
+        <label>Reviewer<select id="draft-reviewer"><option value="">None — no automatic review</option></select></label>
+        <label>Optional new project-relative filename<input id="draft-file" type="text" placeholder="books\example-project\drafts\scene_v001.md"></label>
+        <label>Format<select id="draft-format"><option value="md">Markdown</option><option value="docx">DOCX</option><option value="txt">Text</option></select></label>
+      </div>
+      <div class="dialog-actions"><span><span>Proposed material · existing files are never overwritten</span><br><small id="draft-form-status" aria-live="polite"></small></span><button id="draft-generate" class="send" type="submit">Generate</button></div>
+    </form>
+    <section id="draft-preview" hidden>
+      <div class="dialog-heading"><div><small id="draft-model-label">Claude Sonnet</small><h2 id="draft-title">Draft preview</h2></div></div>
+      <div id="draft-content" class="message-body draft-content"></div>
+      <div class="draft-save">
+        <label>Exact new destination<input id="draft-save-file" type="text"></label>
+        <button id="draft-save-md" class="secondary" type="button">Save as new Markdown</button>
+        <button id="draft-save-docx" class="secondary" type="button">Save as new DOCX</button>
+        <button id="draft-revise" class="secondary" type="button">Revise</button>
+        <button id="draft-rowan" class="secondary" type="button">Ask reviewer</button>
+        <button id="draft-discard" class="secondary danger" type="button">Discard</button>
+      </div>
+      <p id="draft-created" class="creation-result" hidden></p>
+    </section>
+  </dialog>
+
+  <script src="/markdown.js"></script>
+  <script src="/conversation.js"></script>
+  <script src="/vendor/qrcodejs/qrcode.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

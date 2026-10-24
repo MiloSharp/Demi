@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "humans": [
+    {
+      "id": "owner",
+      "sourceAuthor": "Owner",
+      "displayName": "Owner",
+      "color": "#e2a93b",
+      "role": "owner",
+      "canSetCanon": true,
+      "enabled": true
+    }
+  ]
+}

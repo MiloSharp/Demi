@@ -1,0 +1,12 @@
+BEGIN;
+SET LOCAL search_path = demi, public;
+SET LOCAL ROLE demi_owner;
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS handle text;
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS aliases text[] NOT NULL DEFAULT '{}';
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS direct_enabled boolean NOT NULL DEFAULT true;
+UPDATE agents SET handle=slug WHERE handle IS NULL;
+ALTER TABLE agents ALTER COLUMN handle SET NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS agents_project_handle_unique ON agents(project_id,lower(handle));
+ALTER TABLE agents ADD CONSTRAINT agents_handle_format CHECK(handle ~ '^[a-z][a-z0-9_-]{0,31}$') NOT VALID;
+RESET ROLE;
+COMMIT;

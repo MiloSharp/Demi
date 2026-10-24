@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "recentEntryCount": 20,
+  "modelSizedRecentWindows": true,
+  "modelWindowEntries": {
+    "under14B": 8,
+    "14BTo19B": 14,
+    "20BAndAbove": 20,
+    "cloudOrUnknown": 20
+  },
+  "agentOverrides": {},
+  "recentContextMaximumCharacters": 30000,
+  "earlierSummaryMaximumCharacters": 6000,
+  "retrievedOlderEntryCount": 6,
+  "databaseSessionsUnlimited": true
+}

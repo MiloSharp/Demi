@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "name": "My Project",
+  "description": "",
+  "goals": "",
+  "authority": "Owner is the project owner and final decision authority.",
+  "sharedInstructions": "",
+  "sourceFiles": [
+    "COLLABORATION.md",
+    "state\\project-manifest.json"
+  ]
+}
